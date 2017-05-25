@@ -1,0 +1,30 @@
+{
+  "name": "voting_app",
+  "version": "1.0.0",
+  "description": "allows users to vote on and create polls",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "7.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ColeTrammer/voting_app.git"
+  },
+  "keywords": [
+    "voting"
+  ],
+  "author": "ColeTrammer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ColeTrammer/voting_app/issues"
+  },
+  "homepage": "https://github.com/ColeTrammer/voting_app#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "pug": "^2.0.0-rc.1"
+  }
+}
