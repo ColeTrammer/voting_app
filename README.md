@@ -1,2 +1,2 @@
-# voting_app
-app that allows users to make polls
+# Voting App
+app that allows users to make polls<br>
