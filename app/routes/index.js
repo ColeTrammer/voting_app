@@ -16,11 +16,11 @@ module.exports = (app, passport) => {
         res.render("index");
     });
 
-    app.get("/polls/new", pollsController.getNewForm);
+    app.get("/polls/new", isLoggedIn, pollsController.getNewForm);
 
-    app.post("/polls/new", parseForm, pollsController.new);
+    app.post("/polls/new", [parseForm, isLoggedIn], pollsController.new);
 
-    app.get("/polls", isLoggedIn, pollsController.index);
+    app.get("/polls", pollsController.index);
 
     app.get("/polls/:id", pollsController.show)
 
