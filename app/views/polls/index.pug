@@ -1,0 +1,8 @@
+extends ../layout.pug
+
+block content
+    each poll, i in polls
+        h1= poll.title
+        p= i
+        each option in poll.options
+            li= option

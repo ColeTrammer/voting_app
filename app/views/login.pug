@@ -1,8 +1,5 @@
-doctype html
-html
-    head
-        title="Voting App"
-    body
-        .container
-            .login
-                a(href="/auth/github") Login
+extends layout.pug
+
+block content
+    .login
+        a(href="/auth/github") Login

@@ -1,0 +1,8 @@
+extends ../layout.pug
+
+block content
+    form(method="POST" type="application/x-www-form-urlencoded")
+        input(type="text" name="title" value="Title")
+        input(type="text" name="0" value="option1")
+        input(type="text" name="1" value="option1")
+        input(type="submit" value="Submit")
