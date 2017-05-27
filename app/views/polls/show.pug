@@ -6,3 +6,6 @@ block content
         each option, i in poll.options
             label #[input(type="radio" name="choice" value=i)]#{option} #{poll.votes[i]}
         input(type="submit" value="Submit")
+    if owned
+        form(method="GET" action=`${i}/delete`)
+            input.btn.btn-danger(type="submit" value="Delete")

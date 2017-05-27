@@ -25,8 +25,7 @@ module.exports = {
             else {
                 if (req.user)
                     poll.usersWhoVoted.push(req.user._id);
-                else
-                    poll.ipsThatVoted.push(req.ip || req.ips[0]);
+                poll.ipsThatVoted.push(req.ip || req.ips[0]);
                 poll.votes[req.body.choice]++;
                 poll.markModified("votes");
                 poll.save();
@@ -45,9 +44,21 @@ module.exports = {
     show: (req, res) => {
         Poll.find({}, (err, polls) => {
             if (req.params.id >= 0 && req.params.id < polls.length)
-                res.render("polls/show", {poll: polls[req.params.id]});
+                res.render("polls/show", {poll: polls[req.params.id], owned: isOwned(polls[req.params.id], req.user), i: req.params.id});
             else
                 res.redirect("/polls");
+        });
+    },
+    delete: (req, res) => {
+        Poll.find({}, (err, polls) => {
+            const poll = polls[req.params.id];
+            if (isOwned(poll, req.user))
+                Poll.remove({_id: poll._id}, (err) => {
+                    res.redirect("/polls");
+                });
+            else {
+                res.redirect("/polls");
+            }
         });
     },
     new_user: (req, res) => {
@@ -58,7 +69,6 @@ module.exports = {
                 poll.ipsThatVoted.forEach((ip, i) => {
                     if (ip === (req.ip || req.ips[0])) {
                         poll.usersWhoVoted.push(req.user._id);
-                        delete poll.ipsThatVoted[i];
                         poll.save();
                     }
                 });
@@ -66,6 +76,14 @@ module.exports = {
         });
     }
 };
+
+function isOwned(poll, user) {
+    if (user)
+        for (let i = 0; i < user.polls.length; i++)
+            if (user.polls[i].equals(poll._id))
+                return true;
+    return false;
+}
 
 function initVotes(numOptions) {
     let votes = [];

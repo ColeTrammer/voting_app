@@ -13,7 +13,7 @@ module.exports = (app, passport) => {
     });
 
     app.get("/", (req, res) => {
-        res.render("index");
+        res.redirect("/polls");
     });
 
     app.get("/polls/new", isLoggedIn, pollsController.getNewForm);
@@ -23,6 +23,8 @@ module.exports = (app, passport) => {
 
     app.get("/polls/:id", pollsController.show);
     app.post("/polls/:id", parseForm, pollsController.vote);
+
+    app.get("/polls/:id/delete", pollsController.delete);
 
     app.get("/login", (req, res) => {
         res.render("login");
