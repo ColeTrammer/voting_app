@@ -1,8 +1,6 @@
 extends ../layout.pug
     
 block content
-    each poll, i in polls
-        h1= poll.title
-        p= i
-        each option in poll.options
-            li= option
+    ul.list-unstyled
+        each poll, i in polls
+            li #[a(href=`/polls/${i}`) #[h1= poll.title]]

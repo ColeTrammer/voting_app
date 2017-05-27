@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const routes = require("./app/routes");
 const passport = require("passport");
 const session = require("express-session");
+const sass = require("express-compile-sass");
 require("dotenv").load();
 require("./app/config/passport")(passport);
 
@@ -15,6 +16,13 @@ app.set("views", path.join(__dirname, "app/views"));
 app.set("view engine", "pug");
 app.set("port", process.env.PORT);
 
+app.use(sass({
+    root: __dirname,
+    sourceMap: true,
+    sourceComments: true,
+    watchFiles: true,
+    logToConsole: false
+}))
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(session({
     secret: "secret.yaml",
