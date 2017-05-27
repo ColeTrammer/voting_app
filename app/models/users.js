@@ -6,8 +6,8 @@ const User = new mongoose.Schema({
         displayName: String,
         username: String
     },
-    polls: [mongoose.Schema.Types.ObjectId],
-    votedOn: [mongoose.Schema.Types.ObjectId]
+    ip: String,
+    polls: [mongoose.Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model("User", User);

@@ -5,6 +5,8 @@ const Poll = new mongoose.Schema({
     options: [String],
     votes: [Number],
     data: Date,
+    usersWhoVoted: [mongoose.Schema.Types.ObjectId],
+    ipsThatVoted: [String]
 });
 
 module.exports = mongoose.model("Poll", Poll);

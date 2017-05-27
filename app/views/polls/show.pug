@@ -2,5 +2,7 @@ extends ../layout.pug
 
 block content
     h1= poll.title
-    each option in poll.options
-        li= option
+    form(method="POST" type="application/x-www-form-urlencoded")
+        each option, i in poll.options
+            label #[input(type="radio" name="choice" value=i)]#{option} #{poll.votes[i]}
+        input(type="submit" value="Submit")

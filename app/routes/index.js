@@ -17,12 +17,12 @@ module.exports = (app, passport) => {
     });
 
     app.get("/polls/new", isLoggedIn, pollsController.getNewForm);
-
     app.post("/polls/new", [parseForm, isLoggedIn], pollsController.new);
 
     app.get("/polls", pollsController.index);
 
-    app.get("/polls/:id", pollsController.show)
+    app.get("/polls/:id", pollsController.show);
+    app.post("/polls/:id", parseForm, pollsController.vote);
 
     app.get("/login", (req, res) => {
         res.render("login");
@@ -33,10 +33,12 @@ module.exports = (app, passport) => {
         res.redirect("/login");
     });
 
+    app.get("/new_user", pollsController.new_user);
+
     app.get("/auth/github", passport.authenticate("github"));
 
     app.get("/auth/github/callback", passport.authenticate("github", {
-        successRedirect: "/polls",
+        successRedirect: "/new_user",
         failureRedirect: "/login"
     }));
 };
