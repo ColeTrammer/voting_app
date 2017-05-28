@@ -1,5 +1,5 @@
 const bodyParser = require("body-parser");
-const pollsController = require("../controllers/pollsController");
+const polls = require("../controllers/polls");
 
 module.exports = (app, passport) => {
 
@@ -16,15 +16,15 @@ module.exports = (app, passport) => {
         res.redirect("/polls");
     });
 
-    app.get("/polls/new", isLoggedIn, pollsController.getNewForm);
-    app.post("/polls/new", [parseForm, isLoggedIn], pollsController.new);
+    app.get("/polls/new", isLoggedIn, polls.getNewForm);
+    app.post("/polls/new", [parseForm, isLoggedIn], polls.new);
 
-    app.get("/polls", pollsController.index);
+    app.get("/polls", polls.index);
 
-    app.get("/polls/:id", pollsController.show);
-    app.post("/polls/:id", parseForm, pollsController.vote);
+    app.get("/polls/:id", polls.show);
+    app.post("/polls/:id", parseForm, polls.vote);
 
-    app.get("/polls/:id/delete", pollsController.delete);
+    app.get("/polls/:id/delete", polls.delete);
 
     app.get("/login", (req, res) => {
         res.render("login");
@@ -35,7 +35,7 @@ module.exports = (app, passport) => {
         res.redirect("/login");
     });
 
-    app.get("/new_user", pollsController.new_user);
+    app.get("/new_user", polls.new_user);
 
     app.get("/auth/github", passport.authenticate("github"));
 
