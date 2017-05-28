@@ -9,5 +9,11 @@ html
                crossorigin="anonymous")
         block head
     body
+        if successMessages
+            each m in successMessages
+                p.success= m
+        if errorMessages
+            each m in errorMessages
+                p.error= m 
         .container
             block content

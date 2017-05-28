@@ -1,8 +1,17 @@
 extends ../layout.pug
 
+block head
+    script(src="/public/javascripts/newPoll.js")
+    
 block content
     form(method="POST" type="application/x-www-form-urlencoded")
-        input(type="text" name="title" value="Title")
-        input(type="text" name="option-0" value="option1")
-        input(type="text" name="option-1" value="option1")
-        input(type="submit" value="Submit")
+        .form-group
+            label(for="title") Title:
+            input.form-control(type="text" name="title" id="title" placeholder="Title", required="true")
+        .form-group#options
+            label Options:
+            input.form-control(type="text" name="option-0" placeholder="option1" id="0", required="true")
+            input.form-control(type="text" name="option-1" placeholder="option2" id="1", required="true")
+        button.btn.btn-default(type="submit") Submit
+        button.btn.btn-success#add +
+        button.btn.btn-danger#remove -

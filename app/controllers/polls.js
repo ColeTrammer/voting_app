@@ -12,15 +12,15 @@ module.exports = {
         newPoll.save();
 
         req.user.polls.push(newPoll._id);
-        req.user.save();
-
-        res.redirect("/polls");
+        req.user.save((err) => {
+            res.redirect("/polls");
+        });
     },
     vote: (req, res) => {
         Poll.find({}, (err, polls) => {
             const poll = polls[req.params.id];
             if ((req.user && poll.usersWhoVoted.map((id) => id.toHexString()).includes(req.user._id.toHexString())) || poll.ipsThatVoted.includes(req.ip || req.ips[0])) {
-                res.render("polls/show", {alert: "You already voted on this poll.", poll: poll});
+                req.flash("errorMessages", "You already voted on this poll.");
             }
             else {
                 if (req.user)
@@ -29,13 +29,13 @@ module.exports = {
                 poll.votes[req.body.choice]++;
                 poll.markModified("votes");
                 poll.save();
-                res.render("polls/show", {poll: poll})
             }
+            res.redirect(`/polls/${req.params.id}`);
         });
     },
     index: (req, res) => {
         Poll.find({}, (err, polls) => {
-            res.render("polls", {polls: polls});
+            res.render("polls", {polls: polls, alert: req.flash("alert")[0]});
         });
     },
     getNewForm: (req, res) => {

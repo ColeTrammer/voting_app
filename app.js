@@ -5,6 +5,8 @@ const routes = require("./app/routes");
 const passport = require("passport");
 const session = require("express-session");
 const sass = require("express-compile-sass");
+const flash = require("connect-flash");
+const cookieParser = require("cookie-parser")
 require("dotenv").load();
 require("./app/config/passport")(passport);
 
@@ -24,13 +26,20 @@ app.use(sass({
     logToConsole: false
 }))
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 app.use(session({
     secret: "secret.yaml",
     resave: false,
     saveUninitialized: true
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req, res, next) => {
+    res.locals.successMessages = req.flash("successMessages");
+    res.locals.errorMessages = req.flash("errorMessages");
+    next();
+});
 
 routes(app, passport);
 
