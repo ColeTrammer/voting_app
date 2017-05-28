@@ -35,7 +35,7 @@ module.exports = {
     },
     index: (req, res) => {
         Poll.find({}, (err, polls) => {
-            res.render("polls", {polls: polls, alert: req.flash("alert")[0]});
+            res.render("polls", {polls: polls});
         });
     },
     getNewForm: (req, res) => {

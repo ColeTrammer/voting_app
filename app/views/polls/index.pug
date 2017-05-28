@@ -4,3 +4,4 @@ block content
     ul.list-unstyled
         each poll, i in polls
             li #[a(href=`/polls/${i}`) #[h1= poll.title]]
+    a(href="/polls/new") #[button.btn.btn-primary Make a poll]

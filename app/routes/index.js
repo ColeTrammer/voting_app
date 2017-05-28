@@ -16,7 +16,7 @@ module.exports = (app, passport) => {
         res.redirect("/polls");
     });
 
-    app.get("/polls/new", /*isLoggedIn,*/ polls.getNewForm);
+    app.get("/polls/new", isLoggedIn, polls.getNewForm);
     app.post("/polls/new", [parseForm, isLoggedIn], polls.new);
 
     app.get("/polls", polls.index);
