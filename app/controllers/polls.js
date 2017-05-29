@@ -3,18 +3,23 @@ const User = require("../models/users");
 
 module.exports = {
     new: (req, res) => {
-        let newPoll = new Poll({
-            title: req.body.title,
-            date: new Date(),
-            options: parseOptions(req.body)
-        });
-        newPoll.votes = initVotes(newPoll.options.length);
-        newPoll.save();
+        const options = parseOptions(req.body);
+        if (req.user.body !== "" && options.length > 1) {
+            let newPoll = new Poll({
+                title: req.body.title,
+                date: new Date(),
+                options: options
+            });
+            newPoll.votes = initVotes(options.length);
+            newPoll.save();
 
-        req.user.polls.push(newPoll._id);
-        req.user.save((err) => {
+            req.user.polls.push(newPoll._id);
+            req.user.save((err) => {
+                res.redirect("/polls");
+            });
+        } else {
             res.redirect("/polls");
-        });
+        }
     },
     vote: (req, res) => {
         Poll.find({}, (err, polls) => {
@@ -66,8 +71,10 @@ module.exports = {
             polls.forEach((poll) => {
                 poll.ipsThatVoted.forEach((ip, i) => {
                     if (ip === (req.ip || req.ips[0])) {
-                        poll.usersWhoVoted.push(req.user._id);
-                        poll.save();
+                        if (!poll.usersWhoVoted.includes(ip)) {
+                            poll.usersWhoVoted.push(req.user._id);
+                            poll.save();
+                        }
                     }
                 });
             });

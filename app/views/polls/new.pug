@@ -1,7 +1,8 @@
 extends ../layout.pug
 
 block head
-    script(src="/public/javascripts/newPoll.js")
+    link(rel="stylesheet" type="text/css" href="/public/css/polls/new.sass")
+    script(src="/public/js/polls/new.js")
     
 block content
     form(method="POST" type="application/x-www-form-urlencoded")
@@ -12,6 +13,8 @@ block content
             label Options:
             input.form-control(type="text" name="option-0" placeholder="option1" id="0", required="true")
             input.form-control(type="text" name="option-1" placeholder="option2" id="1", required="true")
-        button.btn.btn-default(type="submit") Submit
-        button.btn.btn-success#add +
-        button.btn.btn-danger#remove -
+        button.btn.btn-default#submit(type="submit") Submit
+        .btn-group#options-btns
+            button.btn.btn-danger#remove #[span.glyphicon.glyphicon-minus]
+            button.btn.btn-success#add #[span.glyphicon.glyphicon-plus]
+        

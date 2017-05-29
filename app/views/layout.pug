@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="en")
     head
         title="Voting App"
         link(rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
@@ -7,13 +7,18 @@ html
         script(src="https://code.jquery.com/jquery-3.2.1.min.js"
                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
                crossorigin="anonymous")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
         block head
     body
         .container
             if successMessages
                 each m in successMessages
-                    p.text-success= m
+                    div.alert.alert-success.alert-dismissible
+                        button.close(data-dismiss="alert") #[span(aria-hidden=true) &times]
+                        p= m
             if errorMessages
                 each m in errorMessages
-                    p.text-danger= m
+                    div.alert.alert-danger.alert-dismissible
+                        button.close(data-dismiss="alert") #[span(aria-hidden=true) &times]
+                        p= m
             block content

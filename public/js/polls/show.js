@@ -1,9 +1,9 @@
 $(document).ready(() => {
-    const width = 600,
-          height = 600,
+    const width = 400,
+          height = 400,
           svg = d3.select("#pollResults")
-                  .attr("height", height + 200)
-                  .attr("width", width + 300),
+                  .attr("height", height)
+                  .attr("width", width),
           radius = width / 2,
           g = svg.append("g")
                 .attr("transform", `translate(${[width/2, height/2]})`);
@@ -14,7 +14,7 @@ $(document).ready(() => {
     const textArea = svg.append("g")
         .style("display", "none");
     const textBox = textArea.append("path")
-        .attr("d", boxPath(200, 200, 10, 0, -30))
+        .attr("d", boxPath(150, 100, 10, 0, -30))
         .attr("id", "textBox");
     const text = textArea.append("text")
         .attr("x", 0)
@@ -48,7 +48,7 @@ $(document).ready(() => {
                 .attr("fill", (d) => color(d.data.option))
                 .on("mouseover", (d) => {
                     textArea.style("display", "")
-                        .attr("transform", `translate(${offset(d3.mouse(document.getElementById("pollResults")), 25, 5)})`);
+                        .attr("transform", `translate(${offset(d3.mouse(document.getElementById("pollResults")), 25, 25, true)})`);
                     text.html(`<tspan x="0" dy="0em">Option: ${d.data.option}</tspan>
                                <tspan x="0" dy="1.2em">Votes: ${d.data.votes}</tspan>
                                <tspan x="0" dy="1.2em">Percentage: ${d3.format(".2%")(d.data.votes / totalVotes)}</tspan>`);
@@ -58,18 +58,27 @@ $(document).ready(() => {
                 });
 
             arc.append("text")
-                .attr("transform", (d) => `translate(${offset(label.centroid(d), d.endAngle > Math.PI ? 25 : -15, 0)})`)
+                .attr("transform", (d) => `translate(${offset(label.centroid(d), d.endAngle > Math.PI ? 25 : -15, 0, false)})`)
                 .attr("dy", "0.15em")
-                .text((d) => d.data.option);
+                .text((d) => d.data.votes ? d.data.option : "");
         } else {
             $("body").append("<p>No one has voted yet.</p>");
         }
     });
 });
 
-function offset(arr, x, y) {
+function offset(arr, x, y, b) {
     arr[0] += x;
     arr[1] += y;
+
+    if (b) {
+        if (arr[0] + 150 > 400) {
+            arr[0] -= 200;
+        }
+        if (arr[1] + 100 > 400) {
+            arr[1] -= 150;
+        }
+    }
     return arr;
 }
 
