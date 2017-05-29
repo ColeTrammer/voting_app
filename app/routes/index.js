@@ -26,6 +26,8 @@ module.exports = (app, passport) => {
 
     app.get("/polls/:id/delete", polls.delete);
 
+    app.get("/api/polls/:id", polls.getData);
+
     app.get("/login", (req, res) => {
         res.render("login");
     });

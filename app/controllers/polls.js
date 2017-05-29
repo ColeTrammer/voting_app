@@ -19,9 +19,8 @@ module.exports = {
     vote: (req, res) => {
         Poll.find({}, (err, polls) => {
             const poll = polls[req.params.id];
-            if ((req.user && poll.usersWhoVoted.map((id) => id.toHexString()).includes(req.user._id.toHexString())) || poll.ipsThatVoted.includes(req.ip || req.ips[0])) {
+            if (alreadyVoted(req, poll))
                 req.flash("errorMessages", "You already voted on this poll.");
-            }
             else {
                 if (req.user)
                     poll.usersWhoVoted.push(req.user._id);
@@ -44,7 +43,7 @@ module.exports = {
     show: (req, res) => {
         Poll.find({}, (err, polls) => {
             if (req.params.id >= 0 && req.params.id < polls.length)
-                res.render("polls/show", {poll: polls[req.params.id], owned: isOwned(polls[req.params.id], req.user), i: req.params.id});
+                res.render("polls/show", {poll: polls[req.params.id], owned: isOwned(polls[req.params.id], req.user), i: req.params.id, alreadyVoted: alreadyVoted(req, polls[req.params.id])});
             else
                 res.redirect("/polls");
         });
@@ -56,9 +55,8 @@ module.exports = {
                 Poll.remove({_id: poll._id}, (err) => {
                     res.redirect("/polls");
                 });
-            else {
+            else
                 res.redirect("/polls");
-            }
         });
     },
     new_user: (req, res) => {
@@ -74,8 +72,28 @@ module.exports = {
                 });
             });
         });
+    },
+    getData: (req, res) => {
+        Poll.find({}, (err, polls) => {
+            if (req.params.id >= 0 && req.params.id < polls.length) {
+                const poll = polls[req.params.id];
+                const response = [];
+                poll.options.forEach((option, i) => {
+                    response.push({
+                        option: option,
+                        votes: poll.votes[i]
+                    });
+                })
+                res.send(response)
+            } else
+                res.send({error: "Invalid poll id."});
+        });
     }
 };
+
+function alreadyVoted(req, poll) {
+    return (req.user && poll.usersWhoVoted.map((id) => id.toHexString()).includes(req.user._id.toHexString())) || poll.ipsThatVoted.includes(req.ip || req.ips[0]);
+}
 
 function isOwned(poll, user) {
     if (user)
@@ -87,9 +105,8 @@ function isOwned(poll, user) {
 
 function initVotes(numOptions) {
     let votes = [];
-    for (let i = 0; i < numOptions; i++) {
+    for (let i = 0; i < numOptions; i++)
         votes.push(0);
-    }
     return votes;
 }
 
