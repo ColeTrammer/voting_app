@@ -16,11 +16,13 @@ block content
             else
                 form(method="POST" type="application/x-www-form-urlencoded")
                     each option, i in poll.options
-                        .checkbox #[label #[input(type="radio" name="choice" value=i)]#{option}]
+                        .checkbox #[label #[input(type="radio" name="choice" value=i)] #{option}]
                     button.btn.btn-primary(type="submit") Vote!
             if owned
                 form(method="GET" action=`${i}/delete`)
                     input.btn.btn-danger(type="submit" value="Delete")
+            a(href=`https://twitter.com/intent/tweet?hashtags=polls&text=${poll.title} Voting App ${APP_URL + `polls/${i}`}` target="_blank") 
+                button.btn.btn-info #[i.fa.fa-twitter]Tweet
         .col-md-6.text-center#results
             h1 Results
             svg#pollResults

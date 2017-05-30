@@ -12,10 +12,6 @@ module.exports = (app, passport) => {
         extended: false,
     });
 
-    app.get("/", (req, res) => {
-        res.redirect("/polls");
-    });
-
     app.get("/polls/new", isLoggedIn, polls.getNewForm);
     app.post("/polls/new", [parseForm, isLoggedIn], polls.new);
 
@@ -45,4 +41,8 @@ module.exports = (app, passport) => {
         successRedirect: "/new_user",
         failureRedirect: "/login"
     }));
+
+    app.get("*", (req, res) => {
+        res.redirect("/polls");
+    });
 };

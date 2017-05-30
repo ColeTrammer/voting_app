@@ -1,15 +1,30 @@
 doctype html
 html(lang="en")
     head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
         title="Voting App"
         link(rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
         link(rel="stylesheet" type="text/css" href="/public/css/main.sass")
+        script(src="https://use.fontawesome.com/48d49e4e42.js")
         script(src="https://code.jquery.com/jquery-3.2.1.min.js"
                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
                crossorigin="anonymous")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
         block head
     body
+        nav.navbar.navbar-inverse.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    button.navbar-toggle.collapsed(data-toggle="collapse" data-target="#collapse")
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href="#") Voting App
+                .collapse.navbar-collapse#collapse
+                    ul.nav.navbar-nav
+                        li #[a HELLO]
+                        
         .container
             if successMessages
                 each m in successMessages
