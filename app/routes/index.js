@@ -1,3 +1,5 @@
+"use strict";
+
 const bodyParser = require("body-parser");
 const polls = require("../controllers/polls");
 

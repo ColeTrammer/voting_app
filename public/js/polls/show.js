@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(() => {
     const width = 400,
           height = 400,
@@ -34,7 +36,7 @@ $(document).ready(() => {
 
     $.getJSON(`/api/polls/${POLL_INDEX}`, (data) => {
         if (data.filter((x) => x.votes > 0).length) {
-            totalVotes = data.reduce((acc, d) => {
+            const totalVotes = data.reduce((acc, d) => {
                 return acc + d.votes;
             }, 0);
             color.domain(shuffle(data.map((d) => d.option)));
@@ -88,7 +90,7 @@ function boxPath(w, h, r, x, y) {
 }
 
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
   while (0 !== currentIndex) {
 

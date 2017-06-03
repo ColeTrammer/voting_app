@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
     'githubAuth': {
             'clientID': process.env.GITHUB_KEY,

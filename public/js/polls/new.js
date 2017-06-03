@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(() => {
     let numOptions = 2;
     $("#add").click((e) => {

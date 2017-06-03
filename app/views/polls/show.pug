@@ -2,7 +2,7 @@ extends ../layout.pug
 
 block head
     link(rel="stylesheet" type="text/css" href="/public/css/polls/show.sass")
-    script const POLL_INDEX = #{i};
+    script "use strict";const POLL_INDEX = #{i};
     script(src="https://d3js.org/d3.v4.min.js")
     script(src="https://d3js.org/d3-scale-chromatic.v1.min.js")
     script(src="/public/js/polls/show.js")

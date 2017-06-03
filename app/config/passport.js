@@ -1,3 +1,5 @@
+"use strict";
+
 const GitHubStrategy = require("passport-github").Strategy;
 const User = require("../models/users");
 const configAuth = require("./auth");
