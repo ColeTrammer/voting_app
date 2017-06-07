@@ -23,7 +23,7 @@ html(lang="en")
                     a.navbar-brand(href="#") Voting App
                 .collapse.navbar-collapse#collapse
                     ul.nav.navbar-nav
-                        li #[a HELLO]
+                        li #[a#polls-link(href="/polls") Polls]
                         
         .container
             if successMessages
@@ -37,3 +37,6 @@ html(lang="en")
                         button.close(data-dismiss="alert") #[span(aria-hidden=true) &times]
                         p= m
             block content
+        footer.navbar-inverse.navbar-fixed-bottom.navbar.text-center
+            p Voting App by Cole Trammer<br>
+            a(href="https://github.com/ColeTrammer/voting_app") GitHub
