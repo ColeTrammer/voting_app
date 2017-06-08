@@ -10,12 +10,17 @@ module.exports = (app, passport) => {
         else res.redirect("/login");
     }
 
+    function redirectNew(req, res, next) {
+        req.flash("redirect", "new");
+        next();
+    }
+
     const parseForm = bodyParser.urlencoded({
         extended: false,
     });
 
-    app.get("/polls/new", isLoggedIn, polls.getNewForm);
-    app.post("/polls/new", [parseForm, isLoggedIn], polls.new);
+    app.get("/polls/new", redirectNew, isLoggedIn, polls.getNewForm);
+    app.post("/polls/new", parseForm, isLoggedIn, polls.new);
 
     app.get("/polls", polls.index);
 
@@ -23,6 +28,8 @@ module.exports = (app, passport) => {
     app.post("/polls/:id", parseForm, polls.vote);
 
     app.get("/polls/:id/delete", polls.delete);
+
+    app.post("/polls/:id/add_option", parseForm, isLoggedIn, polls.new_option);
 
     app.get("/api/polls/:id", polls.getData);
 

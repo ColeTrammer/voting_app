@@ -23,22 +23,7 @@ module.exports = {
             res.redirect("/polls");
         }
     },
-    vote: (req, res) => {
-        Poll.find({}, (err, polls) => {
-            const poll = polls[req.params.id];
-            if (alreadyVoted(req, poll))
-                req.flash("errorMessages", "You already voted on this poll.");
-            else {
-                if (req.user)
-                    poll.usersWhoVoted.push(req.user._id);
-                poll.ipsThatVoted.push(req.ip || req.ips[0]);
-                poll.votes[req.body.choice]++;
-                poll.markModified("votes");
-                poll.save();
-            }
-            res.redirect(`/polls/${req.params.id}`);
-        });
-    },
+    vote: vote,
     index: (req, res) => {
         Poll.find({}, (err, polls) => {
             res.render("polls", {polls: polls});
@@ -67,7 +52,11 @@ module.exports = {
         });
     },
     new_user: (req, res) => {
-        res.redirect("/polls");
+        if (req.flash("redirect")[0] === "new") {
+            res.redirect("/polls/new");
+        } else {
+            res.redirect("/polls");
+        }
 
         Poll.find({}, (err, polls) => {
             polls.forEach((poll) => {
@@ -80,6 +69,25 @@ module.exports = {
                     }
                 });
             });
+        });
+    },
+    new_option: (req, res) => {
+        Poll.find({}, (err, polls) => {
+            const poll = polls[req.params.id];
+            if (!alreadyVoted(req, poll)) {
+                if (req.body && req.body.new) {
+                    poll.options.push(req.body.new);
+                    poll.votes.push(0);
+                    poll.save(() => {
+                        req.body.choice = poll.options.length - 1;
+                        vote(req, res);
+                    });
+                } else {
+                    res.redirect(`/polls/${req.params.id}`);
+                }
+            } else {
+                res.redirect(`/polls/${req.params.id}`);
+            }
         });
     },
     getData: (req, res) => {
@@ -99,6 +107,28 @@ module.exports = {
         });
     }
 };
+
+function vote(req, res) {
+    Poll.find({}, (err, polls) => {
+        const poll = polls[req.params.id];
+        if (alreadyVoted(req, poll))
+            req.flash("errorMessages", "You already voted on this poll.");
+        else {
+            if (req.user)
+                poll.usersWhoVoted.push(req.user._id);
+            poll.ipsThatVoted.push(req.ip || req.ips[0]);
+            if (req.body && req.body.choice) {
+                poll.votes[req.body.choice]++;
+                poll.markModified("votes");
+                poll.save(() => {
+                    res.redirect(`/polls/${req.params.id}`);
+                });
+                return;
+            }
+        }
+        res.redirect(`/polls/${req.params.id}`);
+    });
+}
 
 function alreadyVoted(req, poll) {
     return (req.user && poll.usersWhoVoted.map((id) => id.toHexString()).includes(req.user._id.toHexString())) || poll.ipsThatVoted.includes(req.ip || req.ips[0]);

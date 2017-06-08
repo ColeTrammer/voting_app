@@ -1,6 +1,14 @@
 "use strict";
 
 $(document).ready(() => {
+
+    $("#add-option").click((e) => {
+        $("#add-container").show();
+        $("#vote").hide();
+        e.preventDefault();
+    });
+
+    //D3 stuff for the chart
     const width = 400,
           height = 400,
           svg = d3.select("#pollResults")
