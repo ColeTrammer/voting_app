@@ -34,12 +34,12 @@ module.exports = (app, passport) => {
     app.get("/api/polls/:id", polls.getData);
 
     app.get("/login", (req, res) => {
-        res.render("login");
+        res.redirect("/auth/github");
     });
 
     app.get("/logout", (req, res) => {
         req.logout();
-        res.redirect("/login");
+        res.redirect("/polls");
     });
 
     app.get("/new_user", polls.new_user);
