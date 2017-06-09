@@ -9,7 +9,7 @@ const session = require("express-session");
 const sass = require("express-compile-sass");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser")
-if (process.env !== "PRODUCTION")
+if (process.env !== "production")
 require("dotenv").load();
 require("./app/config/passport")(passport);
 
